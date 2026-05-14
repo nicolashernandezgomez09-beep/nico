@@ -1,0 +1,308 @@
+# .confeti{
+position:fixed;
+width:12px;
+height:12px;
+top:-20px;
+z-index:10000;
+animation:caer linear forwards;
+}
+@keyframes caer{
+0%{
+transform:translateY(0) rotate(0deg);
+}
+100%{
+transform:translateY(110vh) rotate(720deg);
+}
+}
+function lanzarConfeti(){
+for(let i=0;i<120;i++){
+let confeti = document.createElement("div");
+confeti.classList.add("confeti");
+confeti.style.left = Math.random()*100 + "vw";
+confeti.style.animationDuration =
+(Math.random()*3+2)+"s";
+confeti.style.background =
+`hsl(${Math.random()*360},100%,50%)`;
+document.body.appendChild(confeti);
+setTimeout(()=>{
+confeti.remove();
+},5000);
+}
+}
+const problemas = {
+"Perímetros y áreas":[
+{
+pregunta:"Un terreno rectangular mide 20m de largo y 15m de ancho. ¿Cuál es su área?",
+respuesta:"300"
+},
+{
+pregunta:"Una cancha cuadrada tiene lados de 12m. ¿Cuál es su perímetro?",
+respuesta:"48"
+},
+{
+pregunta:"Una piscina mide 10m x 6m. ¿Cuál es su área?",
+respuesta:"60"
+}
+],
+"Pitágoras":[
+{
+pregunta:"Un triángulo tiene lados 3 y 4. ¿Cuál es la hipotenusa?",
+respuesta:"5"
+},
+{
+pregunta:"Calcula la hipotenusa de lados 8 y 15.",
+respuesta:"17"
+},
+{
+pregunta:"Si la hipotenusa mide 13 y un lado 5, ¿cuál es el otro lado?",
+respuesta:"12"
+}
+],
+"Números enteros":[
+{
+pregunta:"¿Cuánto es -5 + 12?",
+respuesta:"7"
+},
+{
+pregunta:"Resuelve: -20 + 8",
+respuesta:"-12"
+},
+{
+pregunta:"¿Cuál es el resultado de 15 - 22?",
+respuesta:"-7"
+}
+],
+"Fracciones":[
+{
+pregunta:"¿Cuánto es 1/2 + 1/2?",
+respuesta:"1"
+},
+{
+pregunta:"¿Cuánto es 3/5 + 2/5?",
+respuesta:"1"
+},
+{
+pregunta:"¿Cuánto es 5/6 - 1/6?",
+respuesta:"4/6"
+}
+]
+};
+function mostrarProblema(tipo){
+let contenido = "";
+/* CUADRADO MAGICO */
+if(tipo == "Cuadrados mágicos"){
+let ejercicios = [
+`
+<h2>🔢 Cuadrado Mágico</h2>
+<p>
+Completa el cuadro para que todas las filas sumen 15.
+</p>
+<div class="cuadro-magico">
+<input type="number" value="8" disabled>
+<input id="r1" type="number">
+<input type="number" value="6" disabled>
+<input id="r2" type="number">
+<input type="number" value="5" disabled>
+<input id="r3" type="number">
+<input type="number" value="4" disabled>
+<input id="r4" type="number">
+<input type="number" value="2" disabled>
+</div>
+<button onclick="validarCuadrado1()">
+Responder
+</button>
+<button onclick="cerrarJuego()">
+Cerrar
+</button>
+`,
+`
+<h2>🔢 Cuadrado Mágico</h2>
+<p>
+Haz que todas las columnas sumen 18.
+</p>
+<div class="cuadro-magico">
+<input id="a1" type="number">
+<input type="number" value="6" disabled>
+<input id="a2" type="number">
+<input type="number" value="7" disabled>
+<input id="a3" type="number">
+<input type="number" value="5" disabled>
+<input id="a4" type="number">
+<input type="number" value="4" disabled>
+<input id="a5" type="number">
+</div>
+<button onclick="validarCuadrado2()">
+Responder
+</button>
+<button onclick="cerrarJuego()">
+Cerrar
+</button>
+`
+];
+let random =
+Math.floor(Math.random()*ejercicios.length);
+contenido = ejercicios[random];
+}
+/* SUDOKU */
+else if(tipo == "Sudoku"){
+let ejercicios = [
+`
+<h2>🧩 Sudoku</h2>
+<p>
+Completa los espacios vacíos sin repetir números.
+</p>
+<div class="cuadro-magico">
+<input type="number" value="1" disabled>
+<input id="s1" type="number">
+<input type="number" value="3" disabled>
+<input id="s2" type="number">
+<input type="number" value="5" disabled>
+<input id="s3" type="number">
+<input type="number" value="7" disabled>
+<input id="s4" type="number">
+<input type="number" value="9" disabled>
+</div>
+<button onclick="validarSudoku1()">
+Responder
+</button>
+<button onclick="cerrarJuego()">
+Cerrar
+</button>
+`,
+`
+<h2>🧩 Sudoku</h2>
+<p>
+Rellena correctamente el tablero.
+</p>
+<div class="cuadro-magico">
+<input id="x1" type="number">
+<input type="number" value="2" disabled>
+<input id="x2" type="number">
+<input type="number" value="4" disabled>
+<input id="x3" type="number">
+<input type="number" value="6" disabled>
+<input id="x4" type="number">
+<input type="number" value="8" disabled>
+<input id="x5" type="number">
+</div>
+<button onclick="validarSudoku2()">
+Responder
+</button>
+<button onclick="cerrarJuego()">
+Cerrar
+</button>
+`
+];
+let random =
+Math.floor(Math.random()*ejercicios.length);
+contenido = ejercicios[random];
+}
+/* DEMAS */
+else{
+let lista = problemas[tipo];
+let numero =
+Math.floor(Math.random()*lista.length);
+let ejercicio = lista[numero];
+contenido = `
+<h2>${tipo}</h2>
+<p>${ejercicio.pregunta}</p>
+<input
+id="respuestaUsuario"
+class="respuesta"
+type="text"
+placeholder="Escribe tu respuesta">
+<br><br>
+<button onclick="verificar('${ejercicio.respuesta}')">
+Responder
+</button>
+<button onclick="cerrarJuego()">
+Cerrar
+</button>
+`;
+}
+document.getElementById("juego").innerHTML =
+contenido;
+document.getElementById("juego").style.display =
+"flex";
+}
+/* RESPUESTAS */
+function verificar(correcta){
+let usuario =
+document.getElementById("respuestaUsuario")
+.value
+.trim();
+if(usuario == correcta){
+lanzarConfeti();
+alert("🎉 ¡Correcto!");
+}
+else{
+alert("❌ Incorrecto, perdiste");
+cerrarJuego();
+}
+}
+function validarCuadrado1(){
+if(
+document.getElementById("r1").value=="1" &&
+document.getElementById("r2").value=="3" &&
+document.getElementById("r3").value=="7" &&
+document.getElementById("r4").value=="9"
+){
+lanzarConfeti();
+alert("🎉 ¡Ganaste!");
+}
+else{
+alert("❌ Incorrecto");
+cerrarJuego();
+}
+}
+function validarCuadrado2(){
+if(
+document.getElementById("a1").value=="8" &&
+document.getElementById("a2").value=="4" &&
+document.getElementById("a3").value=="6" &&
+document.getElementById("a4").value=="3" &&
+document.getElementById("a5").value=="7"
+){
+lanzarConfeti();
+alert("🎉 ¡Ganaste!");
+}
+else{
+alert("❌ Incorrecto");
+cerrarJuego();
+}
+}
+function validarSudoku1(){
+if(
+document.getElementById("s1").value=="2" &&
+document.getElementById("s2").value=="4" &&
+document.getElementById("s3").value=="6" &&
+document.getElementById("s4").value=="8"
+){
+lanzarConfeti();
+alert("🎉 Sudoku completado");
+}
+else{
+alert("❌ Incorrecto");
+cerrarJuego();
+}
+}
+function validarSudoku2(){
+if(
+document.getElementById("x1").value=="1" &&
+document.getElementById("x2").value=="3" &&
+document.getElementById("x3").value=="5" &&
+document.getElementById("x4").value=="7" &&
+document.getElementById("x5").value=="9"
+){
+lanzarConfeti();
+alert("🎉 Sudoku completado");
+}
+else{
+alert("❌ Incorrecto");
+cerrarJuego();
+}
+}
+function cerrarJuego(){
+document.getElementById("juego").style.display =
+"none";
+}
